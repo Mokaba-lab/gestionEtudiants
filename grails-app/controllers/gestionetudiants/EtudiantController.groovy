@@ -7,7 +7,7 @@ class EtudiantController {
 
     EtudiantService etudiantService
 
-    static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
+    static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE", exportXml: "GET"]
 
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
@@ -70,6 +70,31 @@ class EtudiantController {
         }
     }
 
+    def exportXml(Long id) {
+        def etudiant = etudiantService.get(id)
+        if (!etudiant) {
+            flash.message = "Étudiant introuvable"
+            redirect(action: "index")
+            return
+        }
+
+        response.contentType = "application/xml"
+        response.setHeader("Content-Disposition", "attachment; filename=etudiant_${id}.xml")
+
+        def writer = new StringWriter()
+        def xml = new groovy.xml.MarkupBuilder(writer)
+
+        xml.etudiant {
+            mkp.yieldUnescaped "<id>${etudiant.id}</id>"
+            nom(etudiant.nom)
+            prenom(etudiant.prenom)
+            email(etudiant.email)
+        }
+
+        render text: writer.toString(), contentType: "application/xml"
+    }
+
+
     def delete(Long id) {
         if (id == null) {
             notFound()
@@ -86,6 +111,7 @@ class EtudiantController {
             '*'{ render status: NO_CONTENT }
         }
     }
+
     protected void notFound() {
         request.withFormat {
             form multipartForm {
