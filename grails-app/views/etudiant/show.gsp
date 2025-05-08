@@ -27,9 +27,17 @@
                     <f:display bean="etudiant" />
                     <g:form resource="${this.etudiant}" method="DELETE">
                         <fieldset class="buttons">
-                            <g:link class="edit" action="edit" resource="${this.etudiant}"><g:message code="default.button.edit.label" default="Edit" /></g:link>
+                            <g:link class="edit" action="edit" resource="${this.etudiant}">
+                                <g:message code="default.button.edit.label" default="Edit" />
+                            </g:link>
+
+                            <g:link class="export" controller="etudiant" action="exportXml" id="${etudiant.id}">
+                                <g:message code="default.button.export.label" default="ExportXml" />
+                            </g:link>
+
                             <input class="delete" type="submit" value="${message(code: 'default.button.delete.label', default: 'Delete')}" onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />
                         </fieldset>
+
                     </g:form>
                 </div>
             </section>

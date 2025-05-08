@@ -86,7 +86,6 @@ class EtudiantController {
             '*'{ render status: NO_CONTENT }
         }
     }
-
     protected void notFound() {
         request.withFormat {
             form multipartForm {
