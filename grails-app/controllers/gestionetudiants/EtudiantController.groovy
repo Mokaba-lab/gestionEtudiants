@@ -120,5 +120,6 @@ class EtudiantController {
             }
             '*'{ render status: NOT_FOUND }
         }
+
     }
 }

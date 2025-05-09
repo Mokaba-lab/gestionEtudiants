@@ -30,8 +30,6 @@
                         <g:link class="edit" action="edit" resource="${this.etudiant}">
                             <g:message code="default.button.edit.label" default="Edit" />
                         </g:link>
-
-                        <!-- Bouton Export XML -->
                         <g:link class="export" controller="etudiant" action="exportXml" id="${etudiant.id}">
                             <g:message code="default.button.export.label" default="ExportXml" />
                         </g:link>
