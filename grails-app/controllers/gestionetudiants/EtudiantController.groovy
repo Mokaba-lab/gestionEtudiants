@@ -6,6 +6,7 @@ import static org.springframework.http.HttpStatus.*
 class EtudiantController {
 
     EtudiantService etudiantService
+    XmlExportSingleService xmlExportSingleService
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE", exportXml: "GET"]
 
@@ -71,27 +72,11 @@ class EtudiantController {
     }
 
     def exportXml(Long id) {
-        def etudiant = etudiantService.get(id)
-        if (!etudiant) {
-            flash.message = "Étudiant introuvable"
-            redirect(action: "index")
-            return
-        }
+       def xmlContent = xmlExportSingleService.exportOneStudent(id)
 
         response.contentType = "application/xml"
         response.setHeader("Content-Disposition", "attachment; filename=etudiant_${id}.xml")
-
-        def writer = new StringWriter()
-        def xml = new groovy.xml.MarkupBuilder(writer)
-
-        xml.etudiant {
-            mkp.yieldUnescaped "<id>${etudiant.id}</id>"
-            nom(etudiant.nom)
-            prenom(etudiant.prenom)
-            email(etudiant.email)
-        }
-
-        render text: writer.toString(), contentType: "application/xml"
+        render xmlContent
     }
 
 
