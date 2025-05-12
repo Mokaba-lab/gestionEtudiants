@@ -5,12 +5,12 @@ class Etudiant {
     String nom
     String prenom
     String email
-    Integer age
+    Integer dateNaissance
 
     static constraints = {
         nom blank: false
         prenom blank: false
         email blank: false, email: true
-        age min: 16, max: 99
+        dateNaissance nullable: false, min: 16, max: 99
     }
 }

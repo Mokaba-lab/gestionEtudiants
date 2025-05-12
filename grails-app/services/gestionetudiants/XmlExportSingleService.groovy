@@ -14,7 +14,7 @@ class XmlExportSingleService {
             "${'nom'}"(etudiant.nom)
             "${'prenom'}"(etudiant.prenom)
             "${'email'}"(etudiant.email)
-            "${'age'}"(etudiant.age)
+            "${'dateNaissance'}"(etudiant.dateNaissance)
         }
         return writer.toString()
     }
