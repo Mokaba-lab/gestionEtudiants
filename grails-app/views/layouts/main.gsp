@@ -15,6 +15,10 @@
 </head>
 
 <body>
+<div style="text-align:right; padding: 10px;">
+    <g:link controller="langue" action="changer" params="[lang: 'fr']">🇫🇷 FR</g:link> |
+    <g:link controller="langue" action="changer" params="[lang: 'en']">🇬🇧 EN</g:link>
+</div>
 
 <nav class="navbar navbar-expand-lg bg-primary navbar-static-top" role="navigation">
     <div class="container-fluid">
