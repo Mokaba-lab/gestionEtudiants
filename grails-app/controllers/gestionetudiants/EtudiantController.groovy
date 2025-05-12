@@ -6,8 +6,9 @@ import static org.springframework.http.HttpStatus.*
 class EtudiantController {
 
     EtudiantService etudiantService
+    XmlExportSingleService xmlExportSingleService
 
-    static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
+    static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE", exportXml: "GET"]
 
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
@@ -69,6 +70,15 @@ class EtudiantController {
             '*'{ respond etudiant, [status: OK] }
         }
     }
+
+    def exportXml(Long id) {
+       def xmlContent = xmlExportSingleService.exportOneStudent(id)
+
+        response.contentType = "application/xml"
+        response.setHeader("Content-Disposition", "attachment; filename=etudiant_${id}.xml")
+        render xmlContent
+    }
+
 
     def delete(Long id) {
         if (id == null) {
