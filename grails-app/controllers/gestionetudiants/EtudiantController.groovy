@@ -5,10 +5,17 @@ import static org.springframework.http.HttpStatus.*
 
 class EtudiantController {
 
+    XmlImportService xmlImportService
     EtudiantService etudiantService
     XmlExportSingleService xmlExportSingleService
 
-    static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE", exportXml: "GET"]
+    static allowedMethods = [save: "POST",
+                             update: "PUT",
+                             delete: "DELETE",
+                             exportXml: "GET",
+                             importXml: "POST",
+                             parseXml  : "POST"
+    ]
 
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
@@ -106,4 +113,33 @@ class EtudiantController {
             '*'{ render status: NOT_FOUND }
         }
     }
+    def importXml() {
+        def file = request.getFile('xmlFile')
+        if (!file || file.empty) {
+            flash.message = "Veuillez sélectionner un fichier XML valide."
+            redirect action: "create"
+            return
+        }
+
+        try {
+            Etudiant etudiant = xmlImportService.importOneStudent(file.inputStream)
+
+            if (!etudiant.validate()) {
+                flash.message = "Le fichier XML est invalide ou contient des erreurs."
+                redirect action: "create"
+                return
+            }
+
+            etudiantService.save(etudiant)
+            flash.message = "Étudiant importé avec succès !"
+            redirect action: "show", id: etudiant.id
+
+        } catch (Exception e) {
+            log.error("Erreur d'importation XML", e)
+            flash.message = "Erreur lors de l'importation du fichier XML."
+            redirect action: "create"
+        }
+
+    }
+
 }
