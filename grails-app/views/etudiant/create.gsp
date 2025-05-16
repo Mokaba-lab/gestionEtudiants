@@ -6,7 +6,7 @@
     <title><g:message code="default.create.label" args="[entityName]" /></title>
     <style>
     .form-container {
-        max-width: 600px;
+        max-width: 700px;
         margin: auto;
     }
     .form-icon {
@@ -14,7 +14,34 @@
         height: 1.5rem;
         margin-right: 0.5rem;
     }
+    .language-selector {
+        position: absolute;
+        top: 20px;
+        right: 30px;
+    }
     </style>
+    <script>
+        function fillFormFromXML(xmlText) {
+            const parser = new DOMParser();
+            const xml = parser.parseFromString(xmlText, 'text/xml');
+
+            document.getElementById('nom').value = xml.getElementsByTagName('nom')[0]?.textContent || '';
+            document.getElementById('prenom').value = xml.getElementsByTagName('prenom')[0]?.textContent || '';
+            document.getElementById('email').value = xml.getElementsByTagName('email')[0]?.textContent || '';
+            document.getElementById('dateNaissance').value = xml.getElementsByTagName('dateNaissance')[0]?.textContent || '';
+        }
+
+        function handleXMLImport(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                fillFormFromXML(e.target.result);
+            }
+            reader.readAsText(file);
+        }
+    </script>
 </head>
 <body>
 <div id="content" role="main">
@@ -44,16 +71,44 @@
                         </div>
                     </g:hasErrors>
 
+                <!-- Formulaire de création avec champs remplissables -->
                     <g:form action="save" resource="${this.etudiant}" method="POST" enctype="multipart/form-data">
-                        <f:all bean="etudiant" />
+                        <div class="mb-3">
+                            <label for="nom"><g:message code="label.nom" /></label>
+                            <input type="text" id="nom" name="nom" class="form-control" required />
+                        </div>
+                        <div class="mb-3">
+                            <label for="prenom"><g:message code="label.prenom" /></label>
+                            <input type="text" id="prenom" name="prenom" class="form-control" required />
+                        </div>
+                        <div class="mb-3">
+                            <label for="email"><g:message code="label.email" /></label>
+                            <input type="email" id="email" name="email" class="form-control" required />
+                        </div>
+                        <div class="mb-3">
+                            <label for="dateNaissance"><g:message code="label.dateNaissance" /></label>
+                            <input type="number" id="dateNaissance" name="dateNaissance" class="form-control" min="16" max="99" required />
+                        </div>
                         <div class="d-flex justify-content-between mt-4">
-                            <g:submitButton name="create" class="btn btn-success w-50 me-2" value="Créer" />
-
+                            <g:submitButton name="create" class="btn btn-success w-50 me-2" value="${message(code:'button.create')}" />
                         </div>
                     </g:form>
+
+                    <hr class="my-4" />
+
+                    <!-- Import XML -->
+                    <div class="text-center mb-3">
+                        <h5 class="text-secondary"><g:message code="label.import.title" /></h5>
+                    </div>
+                    <div class="mb-3">
+                        <input type="file" accept=".xml" class="form-control" onchange="handleXMLImport(event)" />
+                    </div>
+                    <div class="alert alert-info text-center">
+                        <g:message code="label.import.note" />
+                    </div>
+
                 </div>
             </div>
-
         </div>
     </div>
 </div>
