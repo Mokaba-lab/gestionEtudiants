@@ -1,46 +1,53 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta name="layout" content="main" />
-    <g:set var="entityName" value="${message(code: 'etudiant.label', default: 'Etudiant')}" />
-    <title><g:message code="default.show.label" args="[entityName]" /></title>
+    <meta name="layout" content="main"/>
+    <g:set var="entityName" value="${message(code: 'etudiant.label', default: 'Etudiant')}"/>
+    <title><g:message code="default.show.label" args="[entityName]"/></title>
 </head>
 <body>
-<div id="content" role="main">
+<div id="content" role="main" class="py-4">
     <div class="container">
-        <section class="row">
-            <a href="#show-etudiant" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
-            <div class="nav" role="navigation">
-                <ul>
-                    <li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
-                    <li><g:link class="list" action="index"><g:message code="default.list.label" args="[entityName]" /></g:link></li>
-                    <li><g:link class="create" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></li>
-                </ul>
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1><g:message code="default.show.label" args="[entityName]"/></h1>
+            <div>
+                <a class="btn btn-secondary" href="${createLink(uri: '/')}">
+                    <i class="fas fa-home"></i> <g:message code="default.home.label"/>
+                </a>
+                <g:link class="btn btn-info" action="index">
+                    <i class="fas fa-list"></i> <g:message code="default.list.label" args="[entityName]"/>
+                </g:link>
+                <g:link class="btn btn-success" action="create">
+                    <i class="fas fa-plus"></i> <g:message code="default.new.label" args="[entityName]"/>
+                </g:link>
             </div>
-        </section>
-        <section class="row">
-            <div id="show-etudiant" class="col-12 content scaffold-show" role="main">
-                <h1><g:message code="default.show.label" args="[entityName]" /></h1>
-                <g:if test="${flash.message}">
-                    <div class="message" role="status">${flash.message}</div>
-                </g:if>
-                <f:display bean="etudiant" />
-                <g:form resource="${this.etudiant}" method="DELETE">
-                    <fieldset class="buttons">
-                        <g:link class="edit" action="edit" resource="${this.etudiant}">
-                            <g:message code="default.button.edit.label" default="Edit" />
-                        </g:link>
+        </div>
 
-                        <!-- Bouton Export XML -->
-                        <g:link class="export" controller="etudiant" action="exportXml" id="${etudiant.id}">
-                            <g:message code="default.button.export.label" default="ExportXml" />
-                        </g:link>
+        <g:if test="${flash.message}">
+            <div class="alert alert-success" role="status">${flash.message}</div>
+        </g:if>
 
-                        <input class="delete" type="submit" value="${message(code: 'default.button.delete.label', default: 'Delete')}" onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />
-                    </fieldset>
-                </g:form>
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <f:display bean="etudiant"/>
             </div>
-        </section>
+        </div>
+
+        <div class="mt-4 d-flex justify-content-between">
+            <g:form resource="${this.etudiant}" method="DELETE" class="d-inline">
+                <g:link class="btn btn-primary" action="edit" resource="${this.etudiant}">
+                    <i class="fas fa-edit"></i> <g:message code="default.button.edit.label" default="Edit"/>
+                </g:link>
+
+                <g:link class="btn btn-warning" controller="etudiant" action="exportXml" id="${etudiant.id}">
+                    <i class="fas fa-file-code"></i> <g:message code="default.button.export.label" default="Export XML"/>
+                </g:link>
+
+                <input class="btn btn-danger" type="submit"
+                       value="${message(code: 'default.button.delete.label', default: 'Delete')}"
+                       onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');"/>
+            </g:form>
+        </div>
     </div>
 </div>
 </body>

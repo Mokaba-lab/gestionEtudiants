@@ -1,46 +1,61 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta name="layout" content="main" />
-        <g:set var="entityName" value="${message(code: 'etudiant.label', default: 'Etudiant')}" />
-        <title><g:message code="default.create.label" args="[entityName]" /></title>
-    </head>
-    <body>
-    <div id="content" role="main">
-        <div class="container">
-            <section class="row">
-                <a href="#create-etudiant" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
-                <div class="nav" role="navigation">
-                    <ul>
-                        <li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
-                        <li><g:link class="list" action="index"><g:message code="default.list.label" args="[entityName]" /></g:link></li>
-                    </ul>
+<head>
+    <meta name="layout" content="main" />
+    <g:set var="entityName" value="${message(code: 'etudiant.label', default: 'Étudiant')}" />
+    <title><g:message code="default.create.label" args="[entityName]" /></title>
+    <style>
+    .form-container {
+        max-width: 600px;
+        margin: auto;
+    }
+    .form-icon {
+        width: 1.5rem;
+        height: 1.5rem;
+        margin-right: 0.5rem;
+    }
+    </style>
+</head>
+<body>
+<div id="content" role="main">
+    <div class="container mt-5">
+        <div class="form-container">
+            <div class="card shadow rounded-4">
+                <div class="card-header bg-primary text-white text-center rounded-top-4">
+                    <h3 class="mb-0">
+                        <g:message code="default.create.label" args="[entityName]" />
+                    </h3>
                 </div>
-            </section>
-            <section class="row">
-                <div id="create-etudiant" class="col-12 content scaffold-create" role="main">
-                    <h1><g:message code="default.create.label" args="[entityName]" /></h1>
+                <div class="card-body p-4">
+
                     <g:if test="${flash.message}">
-                    <div class="message" role="status">${flash.message}</div>
+                        <div class="alert alert-success text-center">${flash.message}</div>
                     </g:if>
+
                     <g:hasErrors bean="${this.etudiant}">
-                    <ul class="errors" role="alert">
-                        <g:eachError bean="${this.etudiant}" var="error">
-                        <li <g:if test="${error in org.springframework.validation.FieldError}">data-field-id="${error.field}"</g:if>><g:message error="${error}"/></li>
-                        </g:eachError>
-                    </ul>
+                        <div class="alert alert-danger">
+                            <ul class="mb-0">
+                                <g:eachError bean="${this.etudiant}" var="error">
+                                    <li <g:if test="${error in org.springframework.validation.FieldError}">data-field-id="${error.field}"</g:if>>
+                                        <g:message error="${error}" />
+                                    </li>
+                                </g:eachError>
+                            </ul>
+                        </div>
                     </g:hasErrors>
-                    <g:form resource="${this.etudiant}" method="POST">
-                        <fieldset class="form">
-                            <f:all bean="etudiant"/>
-                        </fieldset>
-                        <fieldset class="buttons">
-                            <g:submitButton name="create" class="save" value="${message(code: 'default.button.create.label', default: 'Create')}" />
-                        </fieldset>
+
+                    <g:form action="save" resource="${this.etudiant}" method="POST" enctype="multipart/form-data">
+                        <f:all bean="etudiant" />
+                        <div class="d-flex justify-content-between mt-4">
+                            <g:submitButton name="create" class="btn btn-success w-50 me-2" value="Créer" />
+
+                        </div>
                     </g:form>
                 </div>
-            </section>
+            </div>
+
         </div>
     </div>
-    </body>
+</div>
+</body>
 </html>

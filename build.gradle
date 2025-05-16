@@ -126,3 +126,8 @@ assets {
     minifyJs = true
     minifyCss = true
 }
+tasks.withType(ProcessResources) {
+    filesMatching('**/*.properties') {
+        filter org.apache.tools.ant.filters.EscapeUnicode
+    }
+}
