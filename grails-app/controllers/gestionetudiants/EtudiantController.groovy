@@ -1,8 +1,10 @@
 package gestionetudiants
 
+import grails.plugin.springsecurity.annotation.Secured
 import grails.validation.ValidationException
 import static org.springframework.http.HttpStatus.*
 
+@Secured(['ROLE_ADMIN', 'ROLE_MANAGER'])
 class EtudiantController {
 
     XmlImportService xmlImportService
@@ -16,20 +18,20 @@ class EtudiantController {
                              importXml: "POST",
                              parseXml  : "POST"
     ]
-
+    @Secured(['ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_VIEWER'])
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
         respond etudiantService.list(params), model:[etudiantCount: etudiantService.count()]
     }
-
+    @Secured(['ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_VIEWER'])
     def show(Long id) {
         respond etudiantService.get(id)
     }
-
+    @Secured(['ROLE_ADMIN'])
     def create() {
         respond new Etudiant(params)
     }
-
+    @Secured(['ROLE_ADMIN'])
     def save(Etudiant etudiant) {
         if (etudiant == null) {
             notFound()
@@ -51,11 +53,11 @@ class EtudiantController {
             '*' { respond etudiant, [status: CREATED] }
         }
     }
-
+    @Secured(['ROLE_ADMIN'])
     def edit(Long id) {
         respond etudiantService.get(id)
     }
-
+    @Secured(['ROLE_ADMIN'])
     def update(Etudiant etudiant) {
         if (etudiant == null) {
             notFound()
@@ -77,7 +79,7 @@ class EtudiantController {
             '*'{ respond etudiant, [status: OK] }
         }
     }
-
+    @Secured(['ROLE_ADMIN'])
     def exportXml(Long id) {
        def xmlContent = xmlExportSingleService.exportOneStudent(id)
 
@@ -86,7 +88,7 @@ class EtudiantController {
         render xmlContent
     }
 
-
+    @Secured(['ROLE_ADMIN'])
     def delete(Long id) {
         if (id == null) {
             notFound()
@@ -113,6 +115,7 @@ class EtudiantController {
             '*'{ render status: NOT_FOUND }
         }
     }
+    @Secured(['ROLE_ADMIN'])
     def importXml() {
         def file = request.getFile('xmlFile')
         if (!file || file.empty) {
