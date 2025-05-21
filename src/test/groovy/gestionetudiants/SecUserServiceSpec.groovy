@@ -3,7 +3,7 @@ package gestionetudiants
 import grails.testing.services.ServiceUnitTest
 import spock.lang.Specification
 
-class XmlExportSingleServiceSpec extends Specification implements ServiceUnitTest<XmlExportSingleService>{
+class SecUserServiceSpec extends Specification implements ServiceUnitTest<SecUserService>{
 
     def setup() {
     }

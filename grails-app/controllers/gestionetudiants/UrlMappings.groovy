@@ -14,7 +14,7 @@ class UrlMappings {
         "/etudiant/$id/exportXml"(controller: "etudiant", action: "exportXml")
 
         // Routes par défaut pour l'accueil et les erreurs
-        "/"(view:"/index")
+        "/"(controller: 'login', action: 'auth')
         "500"(view:'/error')
         "404"(view:'/notFound')
     }
